@@ -2,10 +2,6 @@
 
 #include "tree.h"
 
-//#include <iostream>
-//#include <chrono>
-//#include <numeric>
-
 namespace ticTacToe
 {
 	const std::array<Move, BoardState::_BOARD_SIZE> Tree::_moves { TOP_LEFT, TOP_RIGHT, CENTER, BOTTOM_LEFT, BOTTOM_RIGHT, TOP, LEFT, RIGHT, BOTTOM };
@@ -35,24 +31,6 @@ namespace ticTacToe
 		const int_fast8_t sign { _root->_boardState.isCrossesTurn() ? 1 : -1 };
 
 		negamax(*_root, Score::NOUGHTS_WIN, Score::CROSSES_WIN, sign);
-
-		/*std::vector<long long> durations;
-		durations.resize(10000);
-		for (int i = 0; i < 10000; ++i)
-		{
-			auto start = std::chrono::steady_clock::now();
-			restart();
-			int_fast8_t sign = _root->_boardState.isCrossesTurn() ? 1 : -1;
-			negamax(*_root, Score::NOUGHTS_WIN, Score::CROSSES_WIN, sign);
-			_root = _root->findBestChild();
-			auto duration = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - start);
-			durations[i] = duration.count();
-			std::cout << _root->getEntryMove();
-		}
-
-		auto sum { std::accumulate(durations.begin(), durations.end(), 0) };
-
-		std::cout << (sum / 10000.0f);*/
 
 		_root = _root->findBestChild();
 
