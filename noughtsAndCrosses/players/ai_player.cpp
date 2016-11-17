@@ -4,9 +4,9 @@
 
 namespace ticTacToe
 {
-	int_fast8_t AIPlayer::makeMove(const BoardState& state)
-	{
-		_tree.changeCurrentNode(state.getEntryMove());
+	Move AIPlayer::makeMove(const BoardState& state)
+	{	
+		_tree.changeRoot(state.getEntryMove());
 
 		return _tree.makeBestMove();
 	}

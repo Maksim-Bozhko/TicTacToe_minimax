@@ -11,16 +11,18 @@ namespace ticTacToe
 	{
 	public:
 		Game(std::unique_ptr<IInputManager> inputManager, std::unique_ptr<IRender> render);
+
 		void newGame();
-		bool askUserIfRestart();
+		bool restartNeeded() const;
 
 	private:
-		void gameLoop();
+		IPlayer& getCurrentPlayer() noexcept;
+		Side selectSide() const;
+
 		void restart() noexcept;
-		Side letUserSelectSide();
-		IPlayer* getCurrentPlayer() noexcept;
-		
-		std::shared_ptr<IInputManager> _inputManager;
+
+		void gameLoop();
+
 		std::unique_ptr<IRender>	   _render;
 		AIPlayer					   _aiPlayer;
 		HumanPlayer					   _humanPlayer;

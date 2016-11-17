@@ -5,10 +5,11 @@ namespace ticTacToe
 	class IInputManager 
 	{
 	public:
-		virtual ~IInputManager() {};
-		virtual int_fast8_t getNumberPressed() = 0;
-		virtual char getKeyPreseed() = 0;
-		virtual Side letUserSelectSide() = 0;
-		virtual bool askUserIfRestart() = 0;
+		virtual ~IInputManager() noexcept {};
+
+		virtual int getKeyPreseed() const = 0;
+		virtual int_fast8_t getDigitPressed() const = 0;
+		virtual Side selectSide() const = 0;
+		virtual bool confirmAction() const = 0;
 	};
 }

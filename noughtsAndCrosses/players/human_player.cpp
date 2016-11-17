@@ -4,23 +4,32 @@
 
 namespace ticTacToe
 {
-	HumanPlayer::HumanPlayer(std::shared_ptr<IInputManager> inputManager)
+	HumanPlayer::HumanPlayer(std::unique_ptr<IInputManager> inputManager) : _inputManager { std::move(inputManager) }
 	{
-		_inputManager = inputManager;
 	}
 
-	int_fast8_t HumanPlayer::makeMove(const BoardState& state)
+	Move HumanPlayer::makeMove(const BoardState& state)
 	{
-		int_fast8_t move;
-		bool        moveIsValid = false;
+		Move move { Move::NO_MOVE };
+		bool moveIsValid { false };
 
-		while (moveIsValid == false)
+		while (!moveIsValid)
 		{
-			move = _inputManager->getNumberPressed();
+			move = static_cast<Move>(_inputManager->getDigitPressed());
 			moveIsValid = state.moveIsValid(move);
 		}
 
 		return move;
+	}
+
+	bool HumanPlayer::confirmAction() const
+	{
+		return _inputManager->confirmAction();
+	}
+
+	Side HumanPlayer::selectSide() const
+	{
+		return _inputManager->selectSide();
 	}
 }
 

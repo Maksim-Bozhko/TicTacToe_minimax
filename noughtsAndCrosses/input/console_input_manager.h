@@ -6,10 +6,10 @@ namespace ticTacToe
 {
 	class ConsoleInputManager final : public IInputManager
 	{
-	public:
-		int_fast8_t getNumberPressed() override;
-		char getKeyPreseed() override;
-		Side letUserSelectSide() override;
-		bool askUserIfRestart() override;
+	public:		
+		int getKeyPreseed() const override;
+		int_fast8_t getDigitPressed() const override;
+		Side selectSide() const override;
+		bool confirmAction() const override;
 	};
 }

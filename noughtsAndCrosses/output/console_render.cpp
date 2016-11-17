@@ -6,11 +6,11 @@
 
 namespace ticTacToe
 {
-	void ConsoleRender::drawField(const vec2d& field)
+	void ConsoleRender::draw(const vec2d& board) const
 	{
 		clearScreen();
 
-		for (const auto& row : field)
+		for (const auto& row : board)
 		{
 			for (const auto& square : row)
 			{
@@ -30,12 +30,12 @@ namespace ticTacToe
 		}
 	}
 
-	void ConsoleRender::printMessage(std::string message)
+	void ConsoleRender::print(const std::string& message) const
 	{
 		std::cout << message;
 	}
 
-	void ConsoleRender::clearScreen()
+	void ConsoleRender::clearScreen() const
 	{
 		system("cls");
 	}

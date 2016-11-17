@@ -7,8 +7,8 @@ namespace ticTacToe
 	class ConsoleRender final : public IRender
 	{
 	public:
-		void drawField(const vec2d& field) override;
-		void printMessage(std::string message) override;
-		void clearScreen() override;
+		void draw(const vec2d& board) const override;
+		void print(const std::string& message) const override;
+		void clearScreen() const override;
 	};
 }

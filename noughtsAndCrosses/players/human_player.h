@@ -8,10 +8,15 @@ namespace ticTacToe
 	class HumanPlayer final : public IPlayer
 	{
 	public:
-		HumanPlayer(std::shared_ptr<IInputManager> inputManager);
-		int_fast8_t makeMove(const BoardState& state) override;
+		HumanPlayer(std::unique_ptr<IInputManager> inputManager);
+		
+		Move makeMove(const BoardState& state) override;
 		void restart() noexcept override {};
+
+		bool confirmAction() const;
+		Side selectSide() const;
+	
 	private:
-		std::shared_ptr<IInputManager> _inputManager;
+		std::unique_ptr<IInputManager> _inputManager;
 	};
 }

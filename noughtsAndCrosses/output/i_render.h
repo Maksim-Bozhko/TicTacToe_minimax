@@ -5,9 +5,10 @@ namespace ticTacToe
 	class IRender
 	{
 	public:
-		virtual ~IRender() {};
-		virtual void drawField(const vec2d& field) = 0;
-		virtual void printMessage(std::string message) = 0;
-		virtual void clearScreen() = 0;
+		virtual ~IRender() noexcept {};
+		
+		virtual void draw(const vec2d& board) const = 0;
+		virtual void print(const std::string& message) const = 0;
+		virtual void clearScreen() const = 0;
 	};
 }

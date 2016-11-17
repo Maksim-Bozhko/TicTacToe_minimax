@@ -8,21 +8,15 @@
 
 int main()
 {
-	{		
-		using namespace ticTacToe;
-		using std::unique_ptr;
-		
-		unique_ptr<IInputManager> inputManager = unique_ptr<ConsoleInputManager>(new ConsoleInputManager);
-		unique_ptr<IRender> render = unique_ptr<ConsoleRender>(new ConsoleRender);
-		
-		Game game(move(inputManager), move(render));
-		
-		game.newGame();	
+	using namespace ticTacToe;
 
-		while (game.askUserIfRestart())
-		{
-			game.newGame();
-		}
+	Game game { std::make_unique<ConsoleInputManager>(), std::make_unique<ConsoleRender>() };
+
+	game.newGame();
+
+	while (game.restartNeeded())
+	{
+		game.newGame();
 	}
 
 	return 0;

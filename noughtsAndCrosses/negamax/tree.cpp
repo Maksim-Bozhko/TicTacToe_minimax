@@ -2,104 +2,124 @@
 
 #include "tree.h"
 
+//#include <iostream>
+//#include <chrono>
+//#include <numeric>
+
 namespace ticTacToe
 {
+	const std::array<Move, BoardState::_BOARD_SIZE> Tree::_moves { TOP_LEFT, TOP_RIGHT, CENTER, BOTTOM_LEFT, BOTTOM_RIGHT, TOP, LEFT, RIGHT, BOTTOM };
+
 	Tree::Tree() noexcept
 	{
-		restart();
+		_nodes.reserve(_MAX_NODES);
+
+		_nodes.emplace_back(BoardState::getStartingState());
+
+		_root = &_nodes.front();
 	}
 
 	Tree::Tree(BoardState& state) noexcept
 	{
-		_currentNode = _allNodes;
-		_lastNode = _allNodes;
-		_nodesInTotal = 1;
+		_nodes.reserve(_MAX_NODES);
 
-		_currentNode->initialize(state);
+		_nodes.emplace_back(state);
+
+		_root = &_nodes.front();
 	};
 
-	int_fast8_t Tree::makeBestMove()
+	Move Tree::makeBestMove()
 	{
-		assert(_currentNode->_boardState.isTerminal() == false);
+		assert(_root->_boardState.isTerminal() == false);
 
-		int_fast8_t sign = _currentNode->_boardState.isCrossesTurn() ? 1 : -1;
-		negamax(_currentNode, Score::NOUGHTS_WIN, Score::CROSSES_WIN, sign);
+		const int_fast8_t sign { _root->_boardState.isCrossesTurn() ? 1 : -1 };
 
-		_currentNode = _currentNode->findBestChild();
+		negamax(*_root, Score::NOUGHTS_WIN, Score::CROSSES_WIN, sign);
 
-		return _currentNode->getEntryMove();
-	}
+		/*std::vector<long long> durations;
+		durations.resize(10000);
+		for (int i = 0; i < 10000; ++i)
+		{
+			auto start = std::chrono::steady_clock::now();
+			restart();
+			int_fast8_t sign = _root->_boardState.isCrossesTurn() ? 1 : -1;
+			negamax(*_root, Score::NOUGHTS_WIN, Score::CROSSES_WIN, sign);
+			_root = _root->findBestChild();
+			auto duration = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - start);
+			durations[i] = duration.count();
+			std::cout << _root->getEntryMove();
+		}
 
-	void Tree::changeCurrentNode(int_fast8_t move)
-	{
-		Node* newNode = _currentNode;
+		auto sum { std::accumulate(durations.begin(), durations.end(), 0) };
 
-		if (move != BoardState::_NO_MOVE)
-			newNode = _currentNode->findChildByMove(move);
+		std::cout << (sum / 10000.0f);*/
 
-		if (newNode == nullptr)
-			newNode = addChild(_currentNode, move);
+		_root = _root->findBestChild();
 
-		_currentNode = newNode;
+		return _root->getEntryMove();
 	}
 
 	void Tree::restart() noexcept
 	{
-		_currentNode = _allNodes;
-		_lastNode = _allNodes;
-		_nodesInTotal = 1;
+		_nodes.resize(0);
 
-		BoardState state;
-		state.setStartingState();
+		_nodes.emplace_back(BoardState::getStartingState());
 
-		_currentNode->initialize(state);
+		_root = &_nodes.front();
 	}
 
-	// returns true if generates move that leads to terminal state
-	bool Tree::generateAndSortMoves(Node* node)
+	void Tree::changeRoot(Move move)
 	{
-		node->removeAllChildren();
-		node->_bestScore = Score::DRAW;
+		if (move == Move::NO_MOVE) return;
 
-		// order 0 2 4 6 8 1 3 5 7, to check corners and center first
-		for (int_fast8_t i = 0; i < BoardState::_BOARD_SIZE * 2; i += 2)
+		Node* newNode { _root };
+
+		newNode = _root->findChild(move);
+
+		if (newNode == nullptr) // player made sub optimal move which was pruned away
 		{
-			int_fast8_t move = i % 9;
-			if (node->_boardState.destinationIsEmpty(move))
+			newNode = &(addChild(*_root, move));
+		}
+
+		_root = newNode;
+	}
+
+	bool Tree::generateMoves(Node& node)
+	{
+		node.removeAllChildren();
+
+		for (const auto& move : _moves)
+		{
+			if (node._boardState.destinationIsEmpty(move))
 			{
-				Node* child = addChild(node, move);
-				child->evaluate();
-				if (child->_boardState.isTerminal())
+				Node& child = addChild(node, move);
+				child.evaluate();
+				if (child._boardState.isTerminal())
 				{
-					node->_bestScore = child->_bestScore;
-					node->swapFirstAndLastChild();
+					node._bestScore = child._bestScore;
 					return true;
-				}
-				else if (child->_bestScore > node->_bestScore)
-				{
-					node->_bestScore = child->_bestScore;
-					node->swapFirstAndLastChild();
 				}
 			}
 		}
+
 		return false;
 	}
 
-	void Tree::negamax(Node* node, int_fast8_t a, int_fast8_t b, int_fast8_t sign)
+	void Tree::negamax(Node& node, int_fast8_t a, int_fast8_t b, int_fast8_t sign)
 	{
-		if (generateAndSortMoves(node) == false)
+		if (!generateMoves(node))
 		{
-			node->_bestScore = a * sign;
+			node._bestScore = a * sign;
 
-			for (int_fast8_t i = 0; i < node->_childCount; ++i)
+			for (int i = 0; i < node._childCount; ++i)
 			{
-				Node* child = node->_children[i];
+				Node* child = node._children[i];
 
-				negamax(child, -b, -a, -sign);
+				negamax(*child, -b, -a, -sign);
 
-				node->_bestScore = sign*std::max(sign*node->_bestScore, sign*child->_bestScore);
+				node._bestScore = sign * std::max(sign * node._bestScore, sign * child->_bestScore);
 
-				a = std::max(a, int_fast8_t(sign*child->_bestScore));
+				a = std::max(a, int_fast8_t(sign * child->_bestScore));
 
 				if (a >= b) return;
 			}

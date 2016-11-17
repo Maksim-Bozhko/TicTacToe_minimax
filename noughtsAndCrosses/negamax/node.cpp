@@ -4,23 +4,42 @@
 
 namespace ticTacToe
 {
-	Node* const Node::findBestChild() const noexcept
+	Node::Node(const BoardState& boardState) : _boardState { boardState }
 	{
-		for (int_fast8_t i = 0; i < _childCount; ++i)
-			if (_bestScore == _children[i]->_bestScore)
-				return _children[i];
+	}
+
+	Move Node::getEntryMove() const
+	{
+		return _boardState.getEntryMove();
+	}
+
+	Node* Node::findChild(Move move) const noexcept
+	{
+		for (int i = 0; i < _childCount; ++i)
+		{
+			Node* child = _children[i];
+
+			if (child->_boardState.getEntryMove() == move)
+			{
+				return child;
+			}
+		}
 
 		return nullptr;
 	}
 
-	Node* const Node::findChildByMove(int_fast8_t move) const noexcept
+	Node* Node::findBestChild() const noexcept
 	{
-		for (int_fast8_t i = 0; i < _childCount; ++i)
+		for (int i = 0; i < _childCount; ++i)
 		{
 			Node* child = _children[i];
-			if (child->_boardState.getEntryMove() == move) return child;
+
+			if (_bestScore == child->_bestScore)
+			{
+				return child;
+			}
 		}
-		
+
 		return nullptr;
 	}
 }
