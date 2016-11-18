@@ -23,7 +23,7 @@ namespace ticTacToe
 		void negamax(Node& node, int_fast8_t a, int_fast8_t b, int_fast8_t sign);
 
 		static const std::array<Move, BoardState::_BOARD_SIZE> _moves; // all possible moves
-		static constexpr int_fast64_t _MAX_NODES { 5500 }; // 5500 is barely enough for worst case
+		static constexpr int_fast64_t _MAX_NODES { 4568 }; // 4568 is exactly enough for worst case
 
 		std::vector<Node>			  _nodes;
 		Node*						  _root;
@@ -46,7 +46,7 @@ namespace ticTacToe
 
 		parent._children[parent._childCount] = &newNode;
 		++(parent._childCount);
-		assert(parent._childCount <= BoardState::_BOARD_SIZE);
+		assert(parent._childCount <= parent._children.size());
 
 		return newNode;
 	}

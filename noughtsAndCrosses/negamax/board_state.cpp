@@ -4,7 +4,7 @@
 
 namespace ticTacToe
 {
-	const std::array<BoardState::BitBoard, 8> BoardState::_winningPatterns =
+	const std::array<BoardState::BitBoard, 8> BoardState::_winningPatterns 
 	{
 		0b111000000, // top row 448
 		0b000111000, // center row 56

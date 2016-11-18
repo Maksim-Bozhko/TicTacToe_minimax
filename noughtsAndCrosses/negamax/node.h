@@ -14,14 +14,13 @@ namespace ticTacToe
 		Node* findBestChild() const noexcept;
 
 		void removeAllChildren() noexcept;
-		void swapFirstAndLastChild() noexcept;
 
 		void evaluate() noexcept;
 
 		std::array<Node*, BoardState::_BOARD_SIZE> _children;
 		BoardState								   _boardState;
-		int_fast8_t								   _bestScore { Score::DRAW };
-		int_fast8_t								   _childCount { 0 };
+		int_fast8_t								   _childCount;
+		int_fast8_t								   _bestScore;
 
 		friend class Tree;
 	};
@@ -29,14 +28,6 @@ namespace ticTacToe
 	inline void Node::removeAllChildren() noexcept
 	{
 		_childCount = 0;
-	}
-
-	inline void Node::swapFirstAndLastChild() noexcept
-	{
-		if (_childCount > 1)
-		{
-			std::swap(_children[0], _children[_childCount - 1]);
-		}
 	}
 
 	inline void Node::evaluate() noexcept

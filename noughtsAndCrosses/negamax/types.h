@@ -26,8 +26,8 @@ namespace ticTacToe
 	namespace Score
 	{
 		// possible score values for terminal position
-		constexpr int_fast8_t NOUGHTS_WIN { -100 };
+		constexpr int_fast8_t CROSSES_WIN { INT8_MAX };
 		constexpr int_fast8_t DRAW { 0 };
-		constexpr int_fast8_t CROSSES_WIN { 100 };
+		constexpr int_fast8_t NOUGHTS_WIN { -CROSSES_WIN };
 	};
 }

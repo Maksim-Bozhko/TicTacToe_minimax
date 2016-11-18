@@ -2,9 +2,24 @@
 
 #include "tree.h"
 
+//#include <iostream>
+//#include <chrono>
+//#include <numeric>
+
 namespace ticTacToe
 {
-	const std::array<Move, BoardState::_BOARD_SIZE> Tree::_moves { TOP_LEFT, TOP_RIGHT, CENTER, BOTTOM_LEFT, BOTTOM_RIGHT, TOP, LEFT, RIGHT, BOTTOM };
+	const std::array<Move, Move::COUNT> Tree::_moves
+	{
+		CENTER,
+		TOP_LEFT,
+		TOP_RIGHT,
+		BOTTOM_LEFT,
+		BOTTOM_RIGHT,
+		TOP,
+		LEFT,
+		RIGHT,
+		BOTTOM
+	};
 
 	Tree::Tree() noexcept
 	{
@@ -31,6 +46,25 @@ namespace ticTacToe
 		const int_fast8_t sign { _root->_boardState.isCrossesTurn() ? 1 : -1 };
 
 		negamax(*_root, Score::NOUGHTS_WIN, Score::CROSSES_WIN, sign);
+
+		/*const long long count = 100000;
+		std::vector<long long> durations;
+		durations.resize(count);
+		for (long long i = 0; i < count; ++i)
+		{
+			auto start = std::chrono::steady_clock::now();
+			restart();
+			int_fast8_t sign = _root->_boardState.isCrossesTurn() ? 1 : -1;
+			negamax(*_root, Score::NOUGHTS_WIN, Score::CROSSES_WIN, sign);
+			_root = _root->findBestChild();
+			auto duration = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - start);
+			durations[i] = duration.count();
+			std::cout << _root->getEntryMove();
+		}
+
+		long long sum { std::accumulate(durations.begin(), durations.end(), 0) };
+
+		std::cout << std::endl << (sum / (double)count);*/
 
 		_root = _root->findBestChild();
 
@@ -83,24 +117,23 @@ namespace ticTacToe
 		return false;
 	}
 
+
+
 	void Tree::negamax(Node& node, int_fast8_t a, int_fast8_t b, int_fast8_t sign)
 	{
-		if (!generateMoves(node))
+		if (generateMoves(node)) return;
+		
+		for (int i = 0; i < node._childCount; ++i)
 		{
-			node._bestScore = a * sign;
+			Node& child = *(node._children[i]);
 
-			for (int i = 0; i < node._childCount; ++i)
-			{
-				Node* child = node._children[i];
+			negamax(child, -b, -a, -sign);
 
-				negamax(*child, -b, -a, -sign);
+			a = std::max(a, int_fast8_t(sign * child._bestScore));
 
-				node._bestScore = sign * std::max(sign * node._bestScore, sign * child->_bestScore);
-
-				a = std::max(a, int_fast8_t(sign * child->_bestScore));
-
-				if (a >= b) return;
-			}
+			if (a >= b) break;
 		}
+
+		node._bestScore = a * sign;
 	}
 }
