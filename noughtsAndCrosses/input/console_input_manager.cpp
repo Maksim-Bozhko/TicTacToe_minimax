@@ -11,9 +11,9 @@ namespace ticTacToe
 		return _getch();
 	}
 
-	int_fast8_t ConsoleInputManager::getDigitPressed() const
+	int ConsoleInputManager::getDigitPressed() const
 	{
-		return static_cast<int_fast8_t>(_getch() - '0');
+		return _getch() - '0';
 	}
 
 	Side ConsoleInputManager::selectSide() const

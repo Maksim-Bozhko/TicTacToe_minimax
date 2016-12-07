@@ -8,7 +8,7 @@ namespace ticTacToe
 	{
 	public:		
 		int getKeyPreseed() const override;
-		int_fast8_t getDigitPressed() const override;
+		int getDigitPressed() const override;
 		Side selectSide() const override;
 		bool confirmAction() const override;
 	};

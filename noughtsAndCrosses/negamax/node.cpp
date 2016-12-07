@@ -13,11 +13,11 @@ namespace ticTacToe
 		return _boardState.getEntryMove();
 	}
 
-	Node* Node::findChild(Move move) const noexcept
+	Node* Node::findChild(Move move) noexcept
 	{
 		for (int i = 0; i < _childCount; ++i)
 		{
-			Node* child = _children[i];
+			Node* child = getChild(i);
 
 			if (child->_boardState.getEntryMove() == move)
 			{
@@ -28,11 +28,11 @@ namespace ticTacToe
 		return nullptr;
 	}
 
-	Node* Node::findBestChild() const noexcept
-	{
+	Node* Node::findBestChild() noexcept
+	{		
 		for (int i = 0; i < _childCount; ++i)
 		{
-			Node* child = _children[i];
+			Node* child = getChild(i);
 
 			if (_bestScore == child->_bestScore)
 			{

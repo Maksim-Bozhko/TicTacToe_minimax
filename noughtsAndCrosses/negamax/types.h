@@ -2,7 +2,7 @@
 
 namespace ticTacToe
 {
-	enum class Side : int_fast8_t
+	enum class Side
 	{
 		noguhts,
 		crosses

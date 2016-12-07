@@ -61,6 +61,9 @@
     <ClInclude Include="stdafx.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="negamax\bitBoard.h">
+      <Filter>Source Files\negamax</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -92,6 +95,9 @@
     </ClCompile>
     <ClCompile Include="game\game.cpp">
       <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="negamax\bitBoard.cpp">
+      <Filter>Source Files\negamax</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

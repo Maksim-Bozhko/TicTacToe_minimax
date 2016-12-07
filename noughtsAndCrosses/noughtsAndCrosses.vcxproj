@@ -128,7 +128,6 @@
       <AdditionalIncludeDirectories>$(ProjectDir);</AdditionalIncludeDirectories>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -153,7 +152,6 @@
       <AdditionalIncludeDirectories>$(ProjectDir);</AdditionalIncludeDirectories>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -171,6 +169,7 @@
     <ClInclude Include="game\game.h" />
     <ClInclude Include="input\console_input_manager.h" />
     <ClInclude Include="input\i_input_manager.h" />
+    <ClInclude Include="negamax\bitBoard.h" />
     <ClInclude Include="negamax\board_state.h" />
     <ClInclude Include="negamax\node.h" />
     <ClInclude Include="negamax\tree.h" />
@@ -186,6 +185,7 @@
     <ClCompile Include="game\game.cpp" />
     <ClCompile Include="input\console_input_manager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="negamax\bitBoard.cpp" />
     <ClCompile Include="negamax\board_state.cpp" />
     <ClCompile Include="negamax\node.cpp" />
     <ClCompile Include="negamax\tree.cpp" />

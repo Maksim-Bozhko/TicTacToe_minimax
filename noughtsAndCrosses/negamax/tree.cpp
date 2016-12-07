@@ -5,7 +5,7 @@
 namespace ticTacToe
 {
 	const std::array<Move, Move::COUNT> Tree::_moves
-	{
+	{ // it is most efficient to check center and corners first
 		CENTER,
 		TOP_LEFT,
 		TOP_RIGHT,
@@ -24,6 +24,8 @@ namespace ticTacToe
 		_nodes.emplace_back(BoardState::getStartingState());
 
 		_root = &_nodes.front();
+
+		_root->removeAllChildren();
 	}
 
 	Tree::Tree(BoardState& state) noexcept
@@ -33,13 +35,15 @@ namespace ticTacToe
 		_nodes.emplace_back(state);
 
 		_root = &_nodes.front();
+
+		_root->removeAllChildren();
 	};
 
 	Move Tree::makeBestMove()
 	{
 		assert(_root->_boardState.isTerminal() == false);
-
-		const int_fast8_t sign { _root->_boardState.isCrossesTurn() ? 1 : -1 };
+		
+		const int sign { _root->_boardState.isCrossesTurn() ? 1 : -1 };
 
 		negamax(*_root, Score::NOUGHTS_WIN, Score::CROSSES_WIN, sign);
 
@@ -55,6 +59,8 @@ namespace ticTacToe
 		_nodes.emplace_back(BoardState::getStartingState());
 
 		_root = &_nodes.front();
+
+		_root->removeAllChildren();
 	}
 
 	void Tree::changeRoot(Move move)
@@ -81,11 +87,14 @@ namespace ticTacToe
 		{
 			if (node._boardState.destinationIsEmpty(move))
 			{
-				Node& child = addChild(node, move);
-				child.evaluate();
-				if (child._boardState.isTerminal())
+				Node* child = &(addChild(node, move));
+				
+				child->evaluate();
+				
+				if (child->_boardState.isTerminal())
 				{
-					node._bestScore = child._bestScore;
+					node._bestScore = child->_bestScore;
+					
 					return true;
 				}
 			}
@@ -94,19 +103,17 @@ namespace ticTacToe
 		return false;
 	}
 
-
-
-	void Tree::negamax(Node& node, int_fast8_t a, int_fast8_t b, int_fast8_t sign)
+	void Tree::negamax(Node& node, int a, int b, int sign)
 	{
 		if (generateMoves(node)) return;
-		
+
 		for (int i = 0; i < node._childCount; ++i)
 		{
-			Node& child = *(node._children[i]);
+			Node* child = node.getChild(i);
 
-			negamax(child, -b, -a, -sign);
+			negamax(*child, -b, -a, -sign);
 
-			a = std::max(a, int_fast8_t(sign * child._bestScore));
+			a = std::max(a, sign * child->_bestScore);
 
 			if (a >= b) break;
 		}

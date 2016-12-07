@@ -9,7 +9,7 @@ namespace ticTacToe
 	public:
 		Tree() noexcept;
 		Tree(BoardState& state) noexcept;
-
+		
 		Move makeBestMove();
 
 		void restart() noexcept;
@@ -20,34 +20,32 @@ namespace ticTacToe
 		Node& addChild(Node& parent, Move move);
 
 		bool generateMoves(Node& node); // returns true if generates move which leads to terminal state
-		void negamax(Node& node, int_fast8_t a, int_fast8_t b, int_fast8_t sign);
+		void negamax(Node& node, int a, int b, int sign);
 
 		static const std::array<Move, BoardState::_BOARD_SIZE> _moves; // all possible moves
-		static constexpr int_fast64_t _MAX_NODES { 4568 }; // 4568 is exactly enough for worst case
+		static constexpr int _MAX_NODES { 4568 }; // 4568 is exactly enough for worst case
 
-		std::vector<Node>			  _nodes;
-		Node*						  _root;
+		std::vector<Node> _nodes;
+		Node*			  _root;
 	};
-
+	
 	inline Node& Tree::addNode(const BoardState& boardState)
 	{
+		assert(_nodes.size() < _nodes.capacity()); // reallocation not allowed
+		
 		_nodes.emplace_back(boardState);
-
-		assert(_nodes.size() <= _MAX_NODES);
 
 		return _nodes.back();
 	}
 
 	inline Node& Tree::addChild(Node& parent, Move move)
 	{
-		Node& newNode { addNode(parent._boardState) };
+		Node& child { addNode(parent._boardState) };
 
-		newNode._boardState.change(move);
+		child._boardState.change(move);
 
-		parent._children[parent._childCount] = &newNode;
-		++(parent._childCount);
-		assert(parent._childCount <= parent._children.size());
+		parent.addChild(child);
 
-		return newNode;
+		return child;
 	}
 }

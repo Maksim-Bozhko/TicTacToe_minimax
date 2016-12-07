@@ -3,6 +3,7 @@
 #include "console_render.h"
 
 #include <iostream>
+#include <string>
 
 namespace ticTacToe
 {
