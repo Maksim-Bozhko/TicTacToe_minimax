@@ -7,13 +7,13 @@
 
 namespace ticTacToe
 {
-	class AIPlayer final : public IPlayer
-	{
-	public:
-		Move makeMove(const BoardState& state) override;
-		void restart() noexcept override;
-	
-	private:
-		Tree _tree;
-	};
+    class AIPlayer final : public IPlayer
+    {
+    public:
+        Move makeMove(const BoardState& state) override;
+        void restart() noexcept override;
+
+    private:
+        Tree _tree;
+    };
 }

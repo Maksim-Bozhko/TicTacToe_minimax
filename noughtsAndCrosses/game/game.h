@@ -7,26 +7,26 @@
 
 namespace ticTacToe
 {
-	class Game
-	{
-	public:
-		Game(std::unique_ptr<IInputManager> inputManager, std::unique_ptr<IRender> render);
+    class Game
+    {
+    public:
+        Game(std::unique_ptr<IInputManager> inputManager, std::unique_ptr<IRender> render);
 
-		void newGame();
-		bool restartNeeded() const;
+        void newGame();
+        bool restartNeeded() const;
 
-	private:
-		IPlayer& getCurrentPlayer() noexcept;
-		Side selectSide() const;
+    private:
+        IPlayer& getCurrentPlayer() noexcept;
+        Side selectSide() const;
 
-		void restart() noexcept;
+        void restart() noexcept;
 
-		void gameLoop();
+        void gameLoop();
 
-		std::unique_ptr<IRender> _render;
-		AIPlayer				 _aiPlayer;
-		HumanPlayer				 _humanPlayer;
-		BoardState				 _boardState;
-		bool					 _humanTurnToMove;
-	};
+        std::unique_ptr<IRender> _render;
+        AIPlayer				 _aiPlayer;
+        HumanPlayer				 _humanPlayer;
+        BoardState				 _boardState;
+        bool					 _humanTurnToMove;
+    };
 }
