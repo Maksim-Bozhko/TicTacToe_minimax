@@ -23,10 +23,10 @@ namespace ticTacToe
 
 		void gameLoop();
 
-		std::unique_ptr<IRender>	   _render;
-		AIPlayer					   _aiPlayer;
-		HumanPlayer					   _humanPlayer;
-		BoardState					   _boardState;
-		bool						   _humanTurnToMove;
+		std::unique_ptr<IRender> _render;
+		AIPlayer				 _aiPlayer;
+		HumanPlayer				 _humanPlayer;
+		BoardState				 _boardState;
+		bool					 _humanTurnToMove;
 	};
 }

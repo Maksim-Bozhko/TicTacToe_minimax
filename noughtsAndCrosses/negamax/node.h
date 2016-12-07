@@ -19,10 +19,10 @@ namespace ticTacToe
 
 		void evaluate() noexcept;
 		
-		BoardState								   _boardState;
-		int16_t									   _childrenOffset; // all children are stored one after another
-		int_fast8_t								   _childCount;
-		int_fast8_t								   _bestScore;
+		BoardState	_boardState;
+		int16_t		_childrenOffset; // all children are stored one after another
+		int_fast8_t	_childCount;
+		int_fast8_t	_bestScore;
 
 		friend class Tree;
 	};

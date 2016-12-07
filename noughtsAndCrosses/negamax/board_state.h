@@ -29,11 +29,11 @@ namespace ticTacToe
 	private:
 		static const std::array<BitBoard, 8> _winningPatterns;
 
-		std::array<BitBoard, 2>				 _stones;
-		BitBoard							 _empty;
-		Move								 _entryMove;
-		bool								 _crossesTurn;
-		bool								 _terminal;
+		std::array<BitBoard, 2>	_stones;
+		BitBoard				_empty;
+		Move					_entryMove;
+		bool					_crossesTurn;
+		bool					_terminal;
 	};
 
 	inline bool BoardState::isTerminal() const noexcept
