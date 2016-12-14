@@ -7,68 +7,68 @@
 
 namespace ticTacToe
 {
-    Game::Game(std::unique_ptr<IInputManager> inputManager, std::unique_ptr<IRender> render) :
-        _render{ std::move(render) },
-        _humanPlayer{ std::move(inputManager) }
-    {
-        _boardState.setStartingState();
-    }
+	Game::Game(std::unique_ptr<IInputManager> inputManager, std::unique_ptr<IRender> render) :
+		_humanPlayer { std::move(inputManager) },
+		_render { std::move(render) }
+	{
+		_boardState.setStartingState();
+	}
 
-    void Game::newGame()
-    {
-        restart();
+	void Game::newGame()
+	{
+		restart();
 
-        const Side userSide{ selectSide() };
-        _humanTurnToMove = (userSide == Side::crosses);
+		const Side userSide { selectSide() };
+		_humanTurnToMove = (userSide == Side::crosses);
 
-        gameLoop();
-    }
+		gameLoop();
+	}
 
-    bool Game::restartNeeded() const
-    {
-        _render->print("Game over. Do you wish to start a new game?(Y/N)");
+	bool Game::restartNeeded() const
+	{
+		_render->print("Game over. Do you wish to start a new game?(Y/N)");
 
-        return _humanPlayer.confirmAction();
-    }
+		return _humanPlayer.confirmAction();
+	}
 
-    void Game::gameLoop()
-    {
-        _render->draw(_boardState.getBoard());
+	void Game::gameLoop()
+	{
+		_render->draw(_boardState.getBoard());
 
-        while (!_boardState.isTerminal())
-        {
-            Move move = getCurrentPlayer().makeMove(_boardState);
+		while (!_boardState.isTerminal())
+		{
+			Move move = getCurrentPlayer().makeMove(_boardState);
 
-            _boardState.change(move);
+			_boardState.change(move);
 
-            _boardState.evaluate();
+			_boardState.evaluate();
 
-            _humanTurnToMove = !_humanTurnToMove;
+			_humanTurnToMove = !_humanTurnToMove;
 
-            _render->draw(_boardState.getBoard());
-        }
-    }
+			_render->draw(_boardState.getBoard());
+		}
+	}
 
-    void Game::restart() noexcept
-    {
-        _boardState.setStartingState();
+	void Game::restart() noexcept
+	{
+		_boardState.setStartingState();
 
-        _aiPlayer.restart();
-        _humanPlayer.restart();
-    }
+		_aiPlayer.restart();
+		_humanPlayer.restart();
+	}
 
-    Side Game::selectSide() const
-    {
-        _render->clearScreen();
+	Side Game::selectSide() const
+	{
+		_render->clearScreen();
 
-        _render->print("Press 1 to play crosses, 2 to play noughts");
+		_render->print("Press 1 to play crosses, 2 to play noughts");
 
-        return _humanPlayer.selectSide();
-    }
+		return _humanPlayer.selectSide();
+	}
 
-    IPlayer& Game::getCurrentPlayer() noexcept
-    {
-        if (_humanTurnToMove) return _humanPlayer;
-        else				  return _aiPlayer;
-    }
+	IPlayer& Game::getCurrentPlayer() noexcept
+	{
+		if (_humanTurnToMove) return _humanPlayer;
+		else				  return _aiPlayer;
+	}
 }

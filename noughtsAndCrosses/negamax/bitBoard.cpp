@@ -4,15 +4,14 @@
 
 namespace ticTacToe
 {
-    BitBoard::BitBoard(storageType data) noexcept
-    {
-        _data = data;
-    }
+	BitBoard::BitBoard(storageType bits) noexcept : _bits(bits)
+	{
+	}
 
-    BitBoard& BitBoard::operator=(storageType data) noexcept
-    {
-        _data = data;
-
-        return *this;
-    }
+	BitBoard& BitBoard::operator=(storageType bits) noexcept
+	{
+		_bits = bits;
+		
+		return *this;
+	}
 }

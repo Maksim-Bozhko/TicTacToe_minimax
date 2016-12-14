@@ -8,16 +8,16 @@
 
 int main()
 {
-    using namespace ticTacToe;
+	using namespace ticTacToe;
 
-    Game game{ std::make_unique<ConsoleInputManager>(), std::make_unique<ConsoleRender>() };
+	Game game { std::make_unique<ConsoleInputManager>(), std::make_unique<ConsoleRender>() };
 
-    game.newGame();
+	game.newGame();
 
-    while (game.restartNeeded())
-    {
-        game.newGame();
-    }
+	while (game.restartNeeded())
+	{
+		game.newGame();
+	}
 
-    return 0;
+	return 0;
 }

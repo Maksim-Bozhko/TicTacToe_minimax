@@ -119,8 +119,7 @@
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <Optimization>Full</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerOutput>NoListing</AssemblerOutput>
@@ -128,6 +127,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir);</AdditionalIncludeDirectories>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -145,13 +145,13 @@
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <Optimization>Full</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir);</AdditionalIncludeDirectories>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

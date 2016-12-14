@@ -4,48 +4,51 @@
 
 namespace ticTacToe
 {
-    class Tree
-    {
-    public:
-        Tree() noexcept;
-        Tree(BoardState& state) noexcept;
+	class alignas(64) Tree
+	{
+	public:
+		Tree() noexcept;
+		Tree(BoardState& state) noexcept;
 
-        Move makeBestMove();
+		Move makeBestMove();
 
-        void restart() noexcept;
-        void changeRoot(Move move);
+		void changeRoot(Move move);
+		void restart() noexcept;
 
-    private:
-        Node& addNode(const BoardState& boardState);
-        Node& addChild(Node& parent, Move move);
+	private:
+		Node& addNode(const BoardState& boardState);
+		Node& addChild(Node& parent, Move move);
 
-        bool generateMoves(Node& node); // returns true if generates move which leads to terminal state
-        void negamax(Node& node, int a, int b, int sign);
+		bool  generateMoves(Node& node); // returns true if generates move which leads to terminal state
+		void  negamax(Node& node, int a, int b, int sign);
 
-        static const std::array<Move, BoardState::_BOARD_SIZE> _moves; // all possible moves
-        static constexpr int _MAX_NODES{ 4568 }; // 4568 is exactly enough for worst case
+		static const std::array<Move, Move::COUNT> _moves; // all possible moves
+		static constexpr int _MAX_NODES { 4435 }; // 4435 is exactly enough for worst case
 
-        std::vector<Node> _nodes;
-        Node*			  _root;
-    };
+		std::array<Node, _MAX_NODES> _nodes;
+		Node*						 _root;
+		int							 _lastNodeIndex;
+	};
 
-    inline Node& Tree::addNode(const BoardState& boardState)
-    {
-        assert(_nodes.size() < _nodes.capacity()); // reallocation not allowed
+	inline Node& Tree::addNode(const BoardState& boardState)
+	{
+		assert(_lastNodeIndex < _MAX_NODES);
 
-        _nodes.emplace_back(boardState);
+		++_lastNodeIndex;
 
-        return _nodes.back();
-    }
+		_nodes[_lastNodeIndex]._boardState = boardState;
 
-    inline Node& Tree::addChild(Node& parent, Move move)
-    {
-        Node& child{ addNode(parent._boardState) };
+		return	_nodes[_lastNodeIndex];
+	}
 
-        child._boardState.change(move);
+	inline Node& Tree::addChild(Node& parent, Move move)
+	{
+		Node& child { addNode(parent._boardState) };
 
-        parent.addChild(child);
+		child._boardState.change(move);
 
-        return child;
-    }
+		parent.addChild(child);
+
+		return child;
+	}
 }
