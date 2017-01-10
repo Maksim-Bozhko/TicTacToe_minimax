@@ -7,8 +7,7 @@ namespace ticTacToe
 	class ConsoleInputManager final : public IInputManager
 	{
 	public:		
-		int getKeyPreseed() const override;
-		int getDigitPressed() const override;
+		Move getMove(const Board& board) const override;
 		Side selectSide() const override;
 		bool confirmAction() const override;
 	};

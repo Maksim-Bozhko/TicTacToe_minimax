@@ -10,7 +10,7 @@ namespace ticTacToe
 	public:
 		HumanPlayer(std::unique_ptr<IInputManager> inputManager);
 		
-		Move makeMove(const BoardState& state) override;
+		Move makeMove(const Board& board) override;
 		void restart() noexcept override {};
 
 		bool confirmAction() const;

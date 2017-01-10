@@ -37,6 +37,7 @@
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -50,6 +51,7 @@
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -170,7 +172,7 @@
     <ClInclude Include="input\console_input_manager.h" />
     <ClInclude Include="input\i_input_manager.h" />
     <ClInclude Include="negamax\bitBoard.h" />
-    <ClInclude Include="negamax\board_state.h" />
+    <ClInclude Include="negamax\board.h" />
     <ClInclude Include="negamax\node.h" />
     <ClInclude Include="negamax\tree.h" />
     <ClInclude Include="negamax\types.h" />
@@ -186,7 +188,7 @@
     <ClCompile Include="input\console_input_manager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="negamax\bitBoard.cpp" />
-    <ClCompile Include="negamax\board_state.cpp" />
+    <ClCompile Include="negamax\board.cpp" />
     <ClCompile Include="negamax\node.cpp" />
     <ClCompile Include="negamax\tree.cpp" />
     <ClCompile Include="output\console_render.cpp" />

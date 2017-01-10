@@ -2,45 +2,45 @@
 
 #include "console_input_manager.h"
 
-#include <conio.h>
+#include <iostream>
 
 namespace ticTacToe
 {
-	int ConsoleInputManager::getKeyPreseed() const
+	Move ConsoleInputManager::getMove(const Board& board) const
 	{
-		return _getch();
-	}
+		Move move { Move::NO_MOVE };
 
-	int ConsoleInputManager::getDigitPressed() const
-	{
-		return _getch() - '0';
+		while (!board.moveIsValid(move))
+		{
+			int input;
+			std::cin >> input;
+			move = static_cast<Move>(input);
+		}
+
+		return move;
 	}
 
 	Side ConsoleInputManager::selectSide() const
 	{
-		int key { 0 };
-		bool inputIsValid { false };
+		int input { 0 };
 
-		while (!inputIsValid)
+		while (!(input == 1 || input == 2))
 		{
-			key = getKeyPreseed();
-			inputIsValid = (key == '1' || key == '2');
+			std::cin >> input;
 		}
 
-		if (key == '1') return Side::crosses;
+		if (input == 1) return Side::crosses;
 		else			return Side::noguhts;
 	}
 
 	bool ConsoleInputManager::confirmAction() const
 	{
-		int key { 0 };
-		bool inputIsValid { false };
+		char key { 0 };
 
-		while (!inputIsValid)
+		while (!(key == 'y' || key == 'n'))
 		{
-			key = getKeyPreseed();
+			std::cin >> key;
 			key = tolower(key);
-			inputIsValid = (key == 'y' || key == 'n');
 		}
 
 		return (key == 'y');

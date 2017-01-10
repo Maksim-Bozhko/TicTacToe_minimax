@@ -4,16 +4,18 @@
 
 namespace ticTacToe
 {
-	Move AIPlayer::makeMove(const BoardState& state)
+	AIPlayer::AIPlayer() : _tree(std::make_unique<Tree>())
+	{
+	}
+	
+	Move AIPlayer::makeMove(const Board& board)
 	{	
-		_tree.changeRoot(state.getEntryMove());
-
-		return _tree.makeBestMove();
+		return _tree->makeBestMove(board);
 	}
 
 	void AIPlayer::restart() noexcept
 	{
-		_tree.restart();
+		_tree->restart();
 	};
 }
 

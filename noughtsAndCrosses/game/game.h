@@ -25,7 +25,7 @@ namespace ticTacToe
 
 		AIPlayer				 _aiPlayer;
 		HumanPlayer				 _humanPlayer;
-		BoardState				 _boardState;
+		Board					 _board;
 		std::unique_ptr<IRender> _render;
 		bool					 _humanTurnToMove;
 	};

@@ -25,6 +25,8 @@ namespace ticTacToe
 
 		friend bool operator==(const BitBoard& lhs, const BitBoard& rhs);
 
+		storageType toInt() const noexcept;
+
 	private:
 		storageType _bits;
 	};
@@ -67,18 +69,23 @@ namespace ticTacToe
 			3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
 			4, 5, 5, 6, 5, 6, 6, 7, 5, 6, 6, 7, 6, 7, 7, 8 };
 
-		return table[ _bits			& 0xFFu] +
-			   table[(_bits >> 8u)  & 0xFFu]/* +
+		return table[_bits		   & 0xFFu] +
+			   table[(_bits >> 8u) & 0xFFu]/* +
 			   table[(_bits >> 16u) & 0xFFu] +
 			   table[(_bits >> 24u)]*/;
 	}
 
-	BitBoard inline operator&(const BitBoard& lhs, const BitBoard& rhs)
+	inline BitBoard::storageType BitBoard::toInt() const noexcept
+	{
+		return _bits;
+	}
+
+	inline BitBoard operator&(const BitBoard& lhs, const BitBoard& rhs)
 	{
 		return lhs._bits & rhs._bits;
 	}
 
-	bool inline operator==(const BitBoard& lhs, const BitBoard& rhs)
+	inline bool operator==(const BitBoard& lhs, const BitBoard& rhs)
 	{
 		return lhs._bits == rhs._bits;
 	}

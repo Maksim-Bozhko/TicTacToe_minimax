@@ -3,17 +3,17 @@
 #include "i_player.h"
 #include "negamax/tree.h"
 
-#include <iostream>
-
 namespace ticTacToe
 {
 	class AIPlayer final : public IPlayer
 	{
 	public:
-		Move makeMove(const BoardState& state) override;
+		AIPlayer();
+		
+		Move makeMove(const Board& board) override;
 		void restart() noexcept override;
 	
 	private:
-		Tree _tree;
+		std::unique_ptr<Tree> _tree;
 	};
 }

@@ -2,6 +2,9 @@
 
 #include "tree.h"
 
+#include <chrono>
+#include <iostream>
+
 namespace ticTacToe
 {
 	const std::array<Move, Move::COUNT> Tree::_moves
@@ -19,79 +22,85 @@ namespace ticTacToe
 
 	Tree::Tree() noexcept
 	{
-		_lastNodeIndex = 0;
-
-		_root = &_nodes[0];
-
-		_root->_boardState = BoardState::getStartingState();
-
-		_root->removeAllChildren();
-	}
-
-	Tree::Tree(BoardState& state) noexcept
-	{
-		_lastNodeIndex = 0;
-
-		_root = &_nodes[0];
-
-		_root->_boardState = state;
-
-		_root->removeAllChildren();
-	};
-
-	Move Tree::makeBestMove()
-	{				
-		assert(_root->_boardState.isTerminal() == false);
-
-		const int sign { _root->_boardState.isCrossesTurn() ? 1 : -1 };
-
-		negamax(*_root, Score::NOUGHTS_WIN, Score::CROSSES_WIN, sign);
+		_nodes.reserve(1024);
 		
-		_root = _root->findBestChild();
-
-		return _root->getEntryMove();
+		restart(Board::getStartingState());
 	}
 
-	void Tree::restart() noexcept
+	Tree::Tree(Board& board) noexcept
 	{
-		_lastNodeIndex = 0;
+		_nodes.reserve(1024);
+		
+		restart(board);
+	}
 
-		_root = &_nodes[0];
+	Move Tree::makeBestMove(Board board)
+	{				
+		changeRoot(board.getEntryMove());
 
-		_root->_boardState = BoardState::getStartingState();
+		root().removeAllChildren();
 
-		_root->removeAllChildren();
+		const int sign {  root()._board.isCrossesTurn() ? 1 : -1 };
+
+		negamax(_rootIndex, Score::NOUGHTS_WIN, Score::CROSSES_WIN, sign);
+
+		/*const auto beginTime = std::chrono::high_resolution_clock::now();
+
+		int count = 100000;
+		for (int i = 0; i < count; ++i)
+		{
+			restart(Board::getStartingState());
+
+			int sign { root()._board.isCrossesTurn() ? 1 : -1 };
+
+			negamax(_rootIndex, Score::NOUGHTS_WIN, Score::CROSSES_WIN, sign);
+		}
+
+		const auto duration = std::chrono::high_resolution_clock::now() - beginTime;
+
+		std::cout << std::endl << duration.count() / double(count);*/
+		
+		setRoot( *(root().findBestChild()) );
+
+		return root().getEntryMove();
+	}
+
+	void Tree::restart(const Board& board) noexcept
+	{
+		_nodes.resize(0);
+
+		_nodes.emplace_back(board);
+		
+		_rootIndex = 0;
 	}
 
 	void Tree::changeRoot(Move move)
 	{
 		if (move == Move::NO_MOVE) return;
 
-		Node* newNode { _root->findChild(move) };
+		Node* newNode { root().findChild(move) };
 
 		if (newNode == nullptr) // player made sub optimal move which was pruned away
 		{
-			newNode = &(addChild(*_root, move));
+			newNode = &(addChild(_rootIndex, move));
 		}
 
-		_root = newNode;
+		setRoot(*newNode);
 	}
-
-	bool Tree::generateMoves(Node& node)
-	{
-		node.removeAllChildren();
-
+	
+	bool Tree::generateMoves(int node)
+	{	
 		for (const auto& move : _moves)
 		{
-			if (node._boardState.destinationIsEmpty(move))
+			if (at(node)._board.destinationIsEmpty(move))
 			{
 				Node& child = addChild(node, move);
 
 				child.evaluate();
 
-				if (child._boardState.isTerminal())
+				if (child._board.isTerminal())
 				{
-					node._bestScore = child._bestScore;
+					at(node)._bestScore = child._bestScore;
 
 					return true;
 				}
@@ -100,22 +109,22 @@ namespace ticTacToe
 
 		return false;
 	}
-
-	void Tree::negamax(Node& node, int a, int b, int sign)
+	
+	void Tree::negamax(int node, int a, int b, int sign)
 	{
 		if (generateMoves(node)) return;
 
-		for (int i = 0; i < node._childCount; ++i)
+		for (int i = 0; i < at(node)._childCount; ++i)
 		{
-			Node& child = node.getChild(i);
+			int child = node + at(node).getChildOffset(i);
 
 			negamax(child, -b, -a, -sign);
 
-			a = std::max(a, sign * child._bestScore);
+			a = std::max(a, sign * at(child)._bestScore);
 
 			if (a >= b) break;
 		}
 
-		node._bestScore = a  * sign;
+		at(node)._bestScore = a * sign;
 	}
 }

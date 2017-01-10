@@ -2,24 +2,20 @@
 
 #include "game.h"
 
-#include "players/ai_player.h"
-#include "players/human_player.h"
-
 namespace ticTacToe
 {
 	Game::Game(std::unique_ptr<IInputManager> inputManager, std::unique_ptr<IRender> render) :
-		_humanPlayer { std::move(inputManager) },
+		_humanPlayer(std::move(inputManager)),
 		_render { std::move(render) }
 	{
-		_boardState.setStartingState();
+		_board.setStartingState();
 	}
 
 	void Game::newGame()
 	{
 		restart();
 
-		const Side userSide { selectSide() };
-		_humanTurnToMove = (userSide == Side::crosses);
+		_humanTurnToMove = (selectSide() == Side::crosses);
 
 		gameLoop();
 	}
@@ -33,25 +29,25 @@ namespace ticTacToe
 
 	void Game::gameLoop()
 	{
-		_render->draw(_boardState.getBoard());
+		_render->draw(_board.getBoard());
 
-		while (!_boardState.isTerminal())
+		while (!_board.isTerminal())
 		{
-			Move move = getCurrentPlayer().makeMove(_boardState);
+			Move move = getCurrentPlayer().makeMove(_board);
 
-			_boardState.change(move);
+			_board.change(move);
 
-			_boardState.evaluate();
+			_board.evaluate(); // TODO: simplify
 
 			_humanTurnToMove = !_humanTurnToMove;
 
-			_render->draw(_boardState.getBoard());
+			_render->draw(_board.getBoard());
 		}
 	}
 
 	void Game::restart() noexcept
 	{
-		_boardState.setStartingState();
+		_board.setStartingState();
 
 		_aiPlayer.restart();
 		_humanPlayer.restart();
@@ -61,7 +57,7 @@ namespace ticTacToe
 	{
 		_render->clearScreen();
 
-		_render->print("Press 1 to play crosses, 2 to play noughts");
+		_render->print("Press 1 to play crosses, 2 to play noughts\n");
 
 		return _humanPlayer.selectSide();
 	}

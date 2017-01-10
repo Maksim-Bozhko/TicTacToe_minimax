@@ -8,6 +8,13 @@ namespace ticTacToe
 		crosses
 	};
 
+	enum class BoardValue
+	{
+		notWin = -1,
+		unknown = 0,
+		win = 1
+	};
+
 	enum Move : int_fast8_t
 	{
 		NO_MOVE = -1,

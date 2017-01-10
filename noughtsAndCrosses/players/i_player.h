@@ -7,7 +7,7 @@ namespace ticTacToe
     public:
 		virtual ~IPlayer() noexcept {};
 		
-		virtual Move makeMove(const BoardState& state) = 0;
+		virtual Move makeMove(const Board& state) = 0;
 		virtual void restart() noexcept = 0;
     };
 }

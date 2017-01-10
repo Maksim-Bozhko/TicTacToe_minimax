@@ -8,18 +8,9 @@ namespace ticTacToe
 	{
 	}
 
-	Move HumanPlayer::makeMove(const BoardState& state)
+	Move HumanPlayer::makeMove(const Board& board)
 	{
-		Move move { Move::NO_MOVE };
-		bool moveIsValid { false };
-
-		while (!moveIsValid)
-		{
-			move = static_cast<Move>(_inputManager->getDigitPressed());
-			moveIsValid = state.moveIsValid(move);
-		}
-
-		return move;
+		return _inputManager->getMove(board);
 	}
 
 	bool HumanPlayer::confirmAction() const

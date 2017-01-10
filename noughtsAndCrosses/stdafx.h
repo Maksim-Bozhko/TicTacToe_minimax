@@ -7,9 +7,8 @@
 
 // TODO: reference additional headers your program requires here
 #include <vector>
-#include <assert.h>
 #include <array>
 #include <memory>
 
 #include "negamax/types.h"
-#include "negamax/board_state.h"
+#include "negamax/board.h"
